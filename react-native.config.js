@@ -6,6 +6,10 @@ module.exports = {
     platforms: {
       android: {
         cmakeListsPath: 'generated/jni/CMakeLists.txt',
+        cxxModuleCMakeListsModuleName: 'react-native-turbo-encryption',
+        cxxModuleCMakeListsPath: 'CMakeLists.txt',
+        cxxModuleHeaderName: 'NativeTurboEncryptionTurboModule',
+
       },
     },
   },

@@ -1,9 +1,10 @@
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-turbo-encryption';
+import { decrypt, encrypt } from 'react-native-turbo-encryption';
 
-const result = multiply(3, 7);
+const result = decrypt("d5abd060cabef46eb2bc029dec9eb788", "mysecurekey12345");
 
 export default function App() {
+  console.log(result);
   return (
     <View style={styles.container}>
       <Text>Result: {result}</Text>

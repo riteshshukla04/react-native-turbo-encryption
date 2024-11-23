@@ -2,14 +2,40 @@ cmake_minimum_required(VERSION 3.4.1)
 project(TurboEncryption)
 
 set (CMAKE_VERBOSE_MAKEFILE ON)
-set (CMAKE_CXX_STANDARD 14)
 
-add_library(react-native-turbo-encryption            SHARED
-            ../cpp/react-native-turbo-encryption.cpp
-            cpp-adapter.cpp
+
+add_library(react-native-turbo-encryption           
+            STATIC
+            ../cpp/NativeTurboEncryptionTurboModule.cpp
+            ../cpp/tinyaes/aes.c
+            ../cpp/tinyaes/aes.h
+            ../cpp/tinyaes/aes.hpp
 )
 
-# Specifies a path to native header files.
-include_directories(
-            ../cpp
+target_include_directories(react-native-turbo-encryption
+        PUBLIC
+        ../cpp
+)
+
+
+target_include_directories(react-native-turbo-encryption
+        PUBLIC
+        ../cpp/tinyaes
+)
+
+
+find_library( # Sets the name of the path variable.
+              log-lib
+
+              # Specifies the name of the NDK library that
+              # you want CMake to locate.
+              log )
+
+
+
+
+target_link_libraries(react-native-turbo-encryption
+        jsi
+        ${log-lib}
+        react_codegen_RNTurboEncryptionSpec
 )
