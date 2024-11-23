@@ -1,6 +1,14 @@
 # react-native-turbo-encryption
+### 🚀 Superfast Encryption Module for React Native 🔐
 
-A superfast encryption module for React native
+✨ **Written 100% in C++** with ⚡ blazing-fast performance and **direct bindings** to JavaScript! 🚀  
+  
+
+## 💻 Features
+- 🛡️ **End-to-end encryption** built for speed.  
+- 🔗 **Direct bindings** with React Native via ultra-efficient C++ integration.  
+- 📱 **Cross-platform support**: Fully optimized for both iOS and Android.  
+- 🔥 Lightweight
 
 ## Installation
 
@@ -12,17 +20,21 @@ npm install react-native-turbo-encryption
 
 
 ```js
-import { multiply } from 'react-native-turbo-encryption';
+import { decrypt , encrypt } from 'react-native-turbo-encryption';
 
-// ...
+const key = "mysecurekey12345" //keep 16 characters
 
-const result = multiply(3, 7);
+const encryptedResult = encrypt("DSP Siraj is the best batsman in the world", key);
+
+// encryptedResult -> 64672edc4828c8f5f8940715f44a012b90f659a20e46e76cb9731348ea6ff408b60198054da3e49ba3d566634fa122e6
+
+const decryptedResult = decrypt(encryptedResult, key);
+// decryptedResult -> "DSP Siraj is the best batsman in the world"
 ```
+## ⚠️ Important Note: Key Length Must Be 16 Characters 🔑
+Well, **I was too lazy** to add support for different key lengths. 💤
 
 
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 
@@ -30,4 +42,3 @@ MIT
 
 ---
 
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)

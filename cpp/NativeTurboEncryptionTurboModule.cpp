@@ -6,92 +6,112 @@
 #include <iomanip>
 #include "aes.hpp"
 
-
-
-// IV => Will move it to JS side soon
+// Initialization vector (16 bytes)
 const uint8_t iv[16] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                         0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f};
 
+// Convert std::string key to uint8_t[16]
+void convertKey(const std::string &key, uint8_t *outputKey)
+{
+    std::memset(outputKey, 0, 16); // Initialize with zeros
+    std::memcpy(outputKey, key.data(), std::min(key.size(), size_t(16)));
+}
 
-// Helper functions
-std::string bytesToHex(const uint8_t *data, size_t length) {
-    char buffer[3]; 
+// Helper: Add padding to plaintext to make its size a multiple of 16 bytes
+std::vector<uint8_t> addPadding(const std::string &plainText)
+{
+    size_t paddingSize = 16 - (plainText.size() % 16);
+    std::vector<uint8_t> paddedData(plainText.begin(), plainText.end());
+    paddedData.resize(plainText.size() + paddingSize, static_cast<uint8_t>(paddingSize));
+    return paddedData;
+}
+
+// Helper: Remove padding from decrypted plaintext
+std::string removePadding(const std::vector<uint8_t> &paddedData)
+{
+    size_t paddingSize = paddedData.back(); // Padding size is stored in the last byte
+    return std::string(paddedData.begin(), paddedData.end() - paddingSize);
+}
+
+// Alternative implementation: Converts binary data to a hex string
+std::string bytesToHex(const uint8_t *data, size_t length)
+{
+    char buffer[3];
     std::string hexString;
 
-    for (size_t i = 0; i < length; ++i) {
+    for (size_t i = 0; i < length; ++i)
+    {
         sprintf(buffer, "%02x", data[i]);
-        hexString.append(buffer);       
+        hexString.append(buffer);
     }
 
     return hexString;
 }
 
-void convertKey(const std::string &key, uint8_t *outputKey) {
-    std::memset(outputKey, 0, 16); // Initialize with zeros
-    std::memcpy(outputKey, key.data(), std::min(key.size(), size_t(16)));
-}
-
 // Helper function: Converts a hex string to binary data
-std::vector<uint8_t> hexToBytes(const std::string &hex) {
+std::vector<uint8_t> hexToBytes(const std::string &hex)
+{
     std::vector<uint8_t> bytes(hex.length() / 2);
-    for (size_t i = 0; i < bytes.size(); ++i) {
+    for (size_t i = 0; i < bytes.size(); ++i)
+    {
         sscanf(hex.substr(i * 2, 2).c_str(), "%2hhx", &bytes[i]);
     }
     return bytes;
 }
 
-
-
-// Main Encryption function
-std::string encryptString(const std::string &plainText, const std::string &key) {
+// Function to encrypt a string with a string key and return the result as a hex string
+std::string encryptString(const std::string &plainText, const std::string &key)
+{
     uint8_t keyBytes[16];
     convertKey(key, keyBytes);
 
-    uint8_t paddedInput[16] = {0};
-    uint8_t encryptedOutput[16] = {0};
+    // Add padding to the plaintext
+    std::vector<uint8_t> paddedData = addPadding(plainText);
 
-    // Copy plainText into paddedInput and ensure it's 16 bytes
-    std::memcpy(paddedInput, plainText.c_str(), std::min(plainText.size(), size_t(16)));
+    // Prepare the encrypted output buffer
+    std::vector<uint8_t> encryptedData(paddedData.size());
 
-    // Initialize AES context and encrypt
+    // Initialize AES context
     struct AES_ctx ctx;
     AES_init_ctx_iv(&ctx, keyBytes, iv);
-    std::memcpy(encryptedOutput, paddedInput, 16);
-    AES_CBC_encrypt_buffer(&ctx, encryptedOutput, 16);
 
-    // Convert encrypted output to hex string
-    return bytesToHex(encryptedOutput, 16);
+    // Encrypt data in blocks of 16 bytes
+    for (size_t i = 0; i < paddedData.size(); i += 16)
+    {
+        std::memcpy(&encryptedData[i], &paddedData[i], 16);
+        AES_CBC_encrypt_buffer(&ctx, &encryptedData[i], 16);
+    }
+
+    // Convert encrypted data to hex string
+    return bytesToHex(encryptedData.data(), encryptedData.size());
 }
 
-
-// Main Decryption function
-std::string decryptString(const std::string &encryptedHex, const std::string &key) {
+// Function to decrypt a hex string with a string key and return the result as a plaintext string
+std::string decryptString(const std::string &encryptedHex, const std::string &key)
+{
     uint8_t keyBytes[16];
     convertKey(key, keyBytes);
 
+    // Convert hex string back to binary
     std::vector<uint8_t> encryptedData = hexToBytes(encryptedHex);
-    uint8_t decryptedOutput[16] = {0};
 
+    // Prepare the decrypted output buffer
+    std::vector<uint8_t> decryptedData(encryptedData.size());
+
+    // Initialize AES context
     struct AES_ctx ctx;
     AES_init_ctx_iv(&ctx, keyBytes, iv);
-    std::memcpy(decryptedOutput, encryptedData.data(), 16);
-    AES_CBC_decrypt_buffer(&ctx, decryptedOutput, 16);
 
-    return std::string(reinterpret_cast<char *>(decryptedOutput));
+    // Decrypt data in blocks of 16 bytes
+    for (size_t i = 0; i < encryptedData.size(); i += 16)
+    {
+        std::memcpy(&decryptedData[i], &encryptedData[i], 16);
+        AES_CBC_decrypt_buffer(&ctx, &decryptedData[i], 16);
+    }
+
+    // Remove padding and return plaintext
+    return removePadding(decryptedData);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 namespace facebook::react
 {
