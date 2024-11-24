@@ -1,3 +1,5 @@
+#pragma once
+
 #if __has_include(<React-Codegen/RNTurboEncryptionSpecJSI.h>)
 #include <React-Codegen/RNTurboEncryptionSpecJSI.h>
 #elif __has_include("RNTurboEncryptionSpecJSI.h")

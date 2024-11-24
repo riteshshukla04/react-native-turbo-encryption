@@ -1,7 +1,9 @@
 import { StyleSheet, View, Text } from 'react-native';
 import { decrypt, encrypt } from 'react-native-turbo-encryption';
 
-const result = decrypt("d5abd060cabef46eb2bc029dec9eb788", "mysecurekey12345");
+const sss = encrypt("DSP Siraj Supermacy is the best", "mysecurekey12345");
+
+const result = decrypt(sss, "mysecurekey12345");
 
 export default function App() {
   console.log(result);

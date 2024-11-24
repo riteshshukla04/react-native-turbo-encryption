@@ -10,6 +10,8 @@ add_library(react-native-turbo-encryption
             ../cpp/tinyaes/aes.c
             ../cpp/tinyaes/aes.h
             ../cpp/tinyaes/aes.hpp
+            ../cpp/AESWrapper.cpp
+            ../cpp/AESWrapper.hpp
 )
 
 target_include_directories(react-native-turbo-encryption
