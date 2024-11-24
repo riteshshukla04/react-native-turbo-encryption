@@ -1,6 +1,6 @@
 {
   "name": "react-native-turbo-encryption",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A superfast encryption module for React native",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -36,8 +36,25 @@
   },
   "keywords": [
     "react-native",
-    "ios",
-    "android"
+    "encryption",
+    "cryptography",
+    "cpp",
+    "c++",
+    "react-native-encryption",
+    "superfast-encryption",
+    "native-module",
+    "react-native-new-architecture",
+    "new-architecture",
+    "high-performance",
+    "secure",
+    "cross-platform",
+    "mobile-encryption",
+    "data-protection",
+    "secure-communication",
+    "react-native-crypto",
+    "native-encryption",
+    "lightweight",
+    "modern-encryption"
   ],
   "repository": {
     "type": "git",
