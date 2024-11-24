@@ -35,6 +35,19 @@ const decryptedResult = decrypt(encryptedResult, key);
 Well, **I was too lazy** to add support for different key lengths. 💤
 
 
+### Comparison with other libraries
+
+| **Module Name**          | **Encryption Time (ms)** | 
+|-------------------------- |-------------------------|
+| react-native-turbo-encryption | *5 ms*                  |
+| react-native-aes-crypto            | *30 ms*                  | 
+
+
+Note: react-native-aes-crypto has better security features than this . Prefer using that if security is your top priority.
+
+### Screenshot of Performance Results:
+![Performance Comparison Turbo](./assets/turbo.png)
+![Performance Comparison](./assets/aes.png)
 
 ## License
 
