@@ -22,8 +22,7 @@ npm install react-native-turbo-encryption
 ```js
 import { decrypt , encrypt } from 'react-native-turbo-encryption';
 
-const key = "mysecurekey12345" //keep 16 characters
-
+const key = "mysecurekey12345"
 const encryptedResult = encrypt("DSP Siraj is the best batsman in the world", key);
 
 // encryptedResult -> 64672edc4828c8f5f8940715f44a012b90f659a20e46e76cb9731348ea6ff408b60198054da3e49ba3d566634fa122e6
@@ -31,8 +30,7 @@ const encryptedResult = encrypt("DSP Siraj is the best batsman in the world", ke
 const decryptedResult = decrypt(encryptedResult, key);
 // decryptedResult -> "DSP Siraj is the best batsman in the world"
 ```
-## ⚠️ Important Note: Key Length Must Be 16 Characters 🔑
-Well, **I was too lazy** to add support for different key lengths. 💤
+
 
 
 ### Comparison with other libraries
