@@ -2,17 +2,33 @@
 #include <cstring>
 #include <vector>
 #include <iomanip>
+#include <iostream>
 #include "aes.hpp"
 
 // Initialization vector (16 bytes)
 const uint8_t iv[16] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                         0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f};
 
-// Convert std::string key to uint8_t[16]
-void convertKey(const std::string &key, uint8_t *outputKey)
+// Adjust key size to 16, 24, or 32 bytes for AES compatibility
+void adjustKey(const std::string &key, std::vector<uint8_t> &outputKey)
 {
-    std::memset(outputKey, 0, 16); // Initialize with zeros
-    std::memcpy(outputKey, key.data(), std::min(key.size(), size_t(16)));
+    static const size_t AES_KEY_SIZES[] = {16, 24, 32}; // Supported AES key sizes
+    size_t originalKeySize = key.size();
+    size_t adjustedSize = AES_KEY_SIZES[0];
+
+    // Determine the appropriate key size (16, 24, or 32 bytes)
+    for (size_t size : AES_KEY_SIZES)
+    {
+        if (originalKeySize <= size)
+        {
+            adjustedSize = size;
+            break;
+        }
+    }
+
+    // Resize the output key to the adjusted size
+    outputKey.resize(adjustedSize, 0); // Fill with zeros by default
+    std::memcpy(outputKey.data(), key.data(), std::min(originalKeySize, adjustedSize));
 }
 
 // Helper: Add padding to plaintext to make its size a multiple of 16 bytes
@@ -57,11 +73,11 @@ std::vector<uint8_t> hexToBytes(const std::string &hex)
     return bytes;
 }
 
-// Function to encrypt a string with a string key and return the result as a hex string
+// Function to encrypt a string with a dynamic key size and return the result as a hex string
 std::string encryptString(const std::string &plainText, const std::string &key)
 {
-    uint8_t keyBytes[16];
-    convertKey(key, keyBytes);
+    std::vector<uint8_t> keyBytes;
+    adjustKey(key, keyBytes);
 
     // Add padding to the plaintext
     std::vector<uint8_t> paddedData = addPadding(plainText);
@@ -71,7 +87,7 @@ std::string encryptString(const std::string &plainText, const std::string &key)
 
     // Initialize AES context
     struct AES_ctx ctx;
-    AES_init_ctx_iv(&ctx, keyBytes, iv);
+    AES_init_ctx_iv(&ctx, keyBytes.data(), iv);
 
     // Encrypt data in blocks of 16 bytes
     for (size_t i = 0; i < paddedData.size(); i += 16)
@@ -84,11 +100,11 @@ std::string encryptString(const std::string &plainText, const std::string &key)
     return bytesToHex(encryptedData.data(), encryptedData.size());
 }
 
-// Function to decrypt a hex string with a string key and return the result as a plaintext string
+// Function to decrypt a hex string with a dynamic key size and return the result as a plaintext string
 std::string decryptString(const std::string &encryptedHex, const std::string &key)
 {
-    uint8_t keyBytes[16];
-    convertKey(key, keyBytes);
+    std::vector<uint8_t> keyBytes;
+    adjustKey(key, keyBytes);
 
     // Convert hex string back to binary
     std::vector<uint8_t> encryptedData = hexToBytes(encryptedHex);
@@ -98,7 +114,7 @@ std::string decryptString(const std::string &encryptedHex, const std::string &ke
 
     // Initialize AES context
     struct AES_ctx ctx;
-    AES_init_ctx_iv(&ctx, keyBytes, iv);
+    AES_init_ctx_iv(&ctx, keyBytes.data(), iv);
 
     // Decrypt data in blocks of 16 bytes
     for (size_t i = 0; i < encryptedData.size(); i += 16)
