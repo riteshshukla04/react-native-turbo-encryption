@@ -188,7 +188,7 @@
     "type": "all",
     "jsSrcsDir": "src",
     "outputDir": {
-      "ios": "ios/generated",
+      "ios": "build/generated/ios",
       "android": "android/generated"
     },
     "android": {
