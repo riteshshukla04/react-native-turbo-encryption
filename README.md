@@ -47,9 +47,9 @@ Note: react-native-aes-crypto has better security features than this . Prefer us
 ![Performance Comparison Turbo](./assets/turbo.png)
 ![Performance Comparison](./assets/aes.png)
 
-## License
+#### Thanks [Yash Parwani](https://github.com/Yash-Parwani) for the key length fix
 
-MIT
+## License
 
 ---
 
