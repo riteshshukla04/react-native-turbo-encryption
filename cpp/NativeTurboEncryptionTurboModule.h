@@ -8,6 +8,7 @@
 
 
 
+
 #include <jsi/jsi.h>
 #include <ReactCommon/CallInvoker.h>
 
@@ -25,5 +26,7 @@ public:
 
     std::string encrypt(jsi::Runtime &rt, std::string plainText, std::string key);
     std::string decrypt(jsi::Runtime &rt, std::string encryptedText, std::string key);
-};
+    jsi::Value encryptAsync(jsi::Runtime &rt, std::string plainText, std::string key);
+    jsi::Value decryptAsync(jsi::Runtime &rt, std::string encryptedText, std::string key);
+  };
 }
