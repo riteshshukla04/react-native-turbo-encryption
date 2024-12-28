@@ -1,6 +1,6 @@
 {
   "name": "react-native-turbo-encryption",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A superfast encryption module for React native",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",

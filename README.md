@@ -9,6 +9,7 @@
 - 🔗 **Direct bindings** with React Native via ultra-efficient C++ integration.  
 - 📱 **Cross-platform support**: Fully optimized for both iOS and Android.  
 - 🔥 Lightweight
+- 🚀 Supports Both **async and sync** methods
 
 ## Installation
 
@@ -20,14 +21,16 @@ npm install react-native-turbo-encryption
 
 
 ```js
-import { decrypt , encrypt } from 'react-native-turbo-encryption';
+import { decrypt , encrypt, encryptAsync, decryptAsync } from 'react-native-turbo-encryption';
 
 const key = "mysecurekey12345"
 const encryptedResult = encrypt("DSP Siraj is the best batsman in the world", key);
-
+const encryptedResultAsync = await encryptAsync("DSP Siraj is the best batsman in the world", key); //Async way
 // encryptedResult -> 64672edc4828c8f5f8940715f44a012b90f659a20e46e76cb9731348ea6ff408b60198054da3e49ba3d566634fa122e6
 
 const decryptedResult = decrypt(encryptedResult, key);
+
+const decryptedResultAsync = await decryptAsync(encryptedResultAsync, key);//Async way
 // decryptedResult -> "DSP Siraj is the best batsman in the world"
 ```
 
@@ -47,9 +50,5 @@ Note: react-native-aes-crypto has better security features than this . Prefer us
 ![Performance Comparison Turbo](./assets/turbo.png)
 ![Performance Comparison](./assets/aes.png)
 
-#### Thanks [Yash Parwani](https://github.com/Yash-Parwani) for the key length fix
 
-## License
-
----
 
