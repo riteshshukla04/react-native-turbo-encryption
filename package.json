@@ -194,7 +194,7 @@
     "android": {
       "javaPackageName": "com.turboencryption"
     },
-    "includesGeneratedCode": true
+    "includesGeneratedCode": false
   },
   "create-react-native-library": {
     "type": "module-new",
