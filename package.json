@@ -1,6 +1,6 @@
 {
   "name": "react-native-turbo-encryption",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "A superfast encryption module for React native",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -11,7 +11,9 @@
     "lib",
     "android",
     "ios",
+    "build",
     "cpp",
+    "scripts",
     "*.podspec",
     "react-native.config.js",
     "!ios/build",
@@ -32,7 +34,8 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
-    "release": "release-it"
+    "release": "release-it",
+    "postInstall": "node scripts/copyGeneratedFiles.js"
   },
   "keywords": [
     "react-native",
