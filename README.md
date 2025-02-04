@@ -3,6 +3,7 @@
 
 ✨ **Written 100% in C++** with ⚡ blazing-fast performance and **direct bindings** to JavaScript! 🚀  
   
+**Requires new arch to be set to true**
 
 ## 💻 Features
 - 🛡️ **End-to-end encryption** built for speed.  
