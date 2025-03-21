@@ -9,7 +9,6 @@ module.exports = {
         cxxModuleCMakeListsModuleName: 'react-native-turbo-encryption',
         cxxModuleCMakeListsPath: 'CMakeLists.txt',
         cxxModuleHeaderName: 'NativeTurboEncryptionTurboModule',
-
       },
     },
   },

@@ -7,29 +7,29 @@ const path = require('path');
  * @param {string} dest - The destination directory.
  */
 function copyDirectory(src, dest) {
-    if (!fs.existsSync(src)) {
-        console.error(`Source directory "${src}" does not exist.`);
-        return;
+  if (!fs.existsSync(src)) {
+    console.error(`Source directory "${src}" does not exist.`);
+    return;
+  }
+
+  if (!fs.existsSync(dest)) {
+    fs.mkdirSync(dest, { recursive: true });
+  }
+
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+
+  entries.forEach((entry) => {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      copyDirectory(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
     }
+  });
 
-    if (!fs.existsSync(dest)) {
-        fs.mkdirSync(dest, { recursive: true });
-    }
-
-    const entries = fs.readdirSync(src, { withFileTypes: true });
-
-    entries.forEach(entry => {
-        const srcPath = path.join(src, entry.name);
-        const destPath = path.join(dest, entry.name);
-
-        if (entry.isDirectory()) {
-            copyDirectory(srcPath, destPath);
-        } else {
-            fs.copyFileSync(srcPath, destPath);
-        }
-    });
-
-    console.log(`Successfully copied files from "${src}" to "${dest}".`);
+  console.log(`Successfully copied files from "${src}" to "${dest}".`);
 }
 
 // Define source and destination directories relative to the package's directory in node_modules
@@ -39,7 +39,7 @@ const destDir = path.resolve(packageDir, 'build/generated/ios');
 
 // Trigger the file copy
 try {
-    copyDirectory(srcDir, destDir);
+  copyDirectory(srcDir, destDir);
 } catch (error) {
-    console.error('Error during file copying:', error);
+  console.error('Error during file copying:', error);
 }

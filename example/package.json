@@ -10,8 +10,8 @@
     "build:ios": "react-native build-ios --scheme TurboEncryptionExample --mode Debug --extra-params \"-sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO\""
   },
   "dependencies": {
-    "react": "18.3.1",
-    "react-native": "0.76.3"
+    "react": "19.0.0",
+    "react-native": "0.78.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -20,10 +20,10 @@
     "@react-native-community/cli": "15.0.1",
     "@react-native-community/cli-platform-android": "15.0.1",
     "@react-native-community/cli-platform-ios": "15.0.1",
-    "@react-native/babel-preset": "0.76.3",
-    "@react-native/metro-config": "0.76.3",
-    "@react-native/typescript-config": "0.76.3",
-    "react-native-builder-bob": "^0.33.1"
+    "@react-native/babel-preset": "0.78.1",
+    "@react-native/metro-config": "0.78.1",
+    "@react-native/typescript-config": "0.78.1",
+    "react-native-builder-bob": "^0.36.0"
   },
   "engines": {
     "node": ">=18"

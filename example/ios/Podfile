@@ -25,12 +25,8 @@ target 'TurboEncryptionExample' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'TurboEncryptionExampleTests' do
-    inherit! :complete
-    # Pods for testing
-  end
 
-
+  # Run Codegen during development for the example app.
   pre_install do |installer|
     system("cd ../../ && npx bob build --target codegen")
   end

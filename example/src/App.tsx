@@ -1,6 +1,18 @@
 import { useState } from 'react';
-import { View, Text, Button, StyleSheet, ScrollView, Alert } from 'react-native';
-import { encrypt, decrypt, encryptAsync, decryptAsync } from 'react-native-turbo-encryption';
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  ScrollView,
+  Alert,
+} from 'react-native';
+import {
+  encrypt,
+  decrypt,
+  encryptAsync,
+  decryptAsync,
+} from 'react-native-turbo-encryption';
 
 export default function App() {
   const plainText = 'DSP Siraj is the best Batsman in the world';
@@ -14,7 +26,7 @@ export default function App() {
       setEncryptedText(encrypted);
       Alert.alert('Success', 'Text encrypted successfully!');
     } catch (error) {
-      Alert.alert('Error', error.message);
+      Alert.alert('Error', (error as any).message as any);
     }
   };
 
@@ -24,7 +36,7 @@ export default function App() {
       setDecryptedText(decrypted);
       Alert.alert('Success', 'Text decrypted successfully!');
     } catch (error) {
-      Alert.alert('Error', error.message);
+      Alert.alert('Error', (error as any).message as any);
     }
   };
 
@@ -34,7 +46,7 @@ export default function App() {
       setEncryptedText(encrypted);
       Alert.alert('Success', 'Text encrypted successfully!');
     } catch (error) {
-      Alert.alert('Error', error.message);
+      Alert.alert('Error', (error as any).message as any);
     }
   };
 
@@ -44,7 +56,7 @@ export default function App() {
       setDecryptedText(decrypted);
       Alert.alert('Success', 'Text decrypted successfully!');
     } catch (error) {
-      Alert.alert('Error', error.message);
+      Alert.alert('Error', (error as any).message as any);
     }
   };
 
@@ -60,7 +72,11 @@ export default function App() {
 
       <View style={styles.buttonContainer}>
         <Button title="Encrypt" onPress={handleEncrypt} color="#007BFF" />
-        <Button title="Encrypt Async" onPress={handleEncryptAsync} color="#28A745" />
+        <Button
+          title="Encrypt Async"
+          onPress={handleEncryptAsync}
+          color="#28A745"
+        />
       </View>
 
       <Text style={styles.label}>Encrypted Text:</Text>
@@ -68,7 +84,11 @@ export default function App() {
 
       <View style={styles.buttonContainer}>
         <Button title="Decrypt" onPress={handleDecrypt} color="#007BFF" />
-        <Button title="Decrypt Async" onPress={handleDecryptAsync} color="#28A745" />
+        <Button
+          title="Decrypt Async"
+          onPress={handleDecryptAsync}
+          color="#28A745"
+        />
       </View>
 
       <Text style={styles.label}>Decrypted Text:</Text>
