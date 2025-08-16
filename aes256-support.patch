@@ -1,0 +1,43 @@
+From 3dec066e9b9c21aa66d98563b6247d28971d2cc4 Mon Sep 17 00:00:00 2001
+From: riteshshukla04 <riteshshukla2381@gmail.com>
+Date: Sun, 17 Aug 2025 03:20:34 +0530
+Subject: [PATCH] Enable AES-256 support and configure key sizes for dual
+ AES-128/AES-256 compatibility
+
+---
+ aes.h | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
+
+diff --git a/aes.h b/aes.h
+index b29b668..93565c1 100644
+--- a/aes.h
++++ b/aes.h
+@@ -26,20 +26,14 @@
+ 
+ #define AES128 1
+ //#define AES192 1
+-//#define AES256 1
++#define AES256 1
+ 
+ #define AES_BLOCKLEN 16 // Block length in bytes - AES is 128b block only
+ 
+-#if defined(AES256) && (AES256 == 1)
+-    #define AES_KEYLEN 32
+-    #define AES_keyExpSize 240
+-#elif defined(AES192) && (AES192 == 1)
+-    #define AES_KEYLEN 24
+-    #define AES_keyExpSize 208
+-#else
+-    #define AES_KEYLEN 16   // Key length in bytes
+-    #define AES_keyExpSize 176
+-#endif
++// We'll handle key sizes dynamically in our wrapper
++// The library will use AES256 configuration by default when both are enabled
++#define AES_KEYLEN 32
++#define AES_keyExpSize 240
+ 
+ struct AES_ctx
+ {
+-- 
+2.39.5 (Apple Git-154)
+

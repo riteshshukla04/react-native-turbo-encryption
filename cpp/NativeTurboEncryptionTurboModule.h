@@ -28,5 +28,11 @@ public:
     std::string decrypt(jsi::Runtime &rt, std::string encryptedText, std::string key);
     jsi::Value encryptAsync(jsi::Runtime &rt, std::string plainText, std::string key);
     jsi::Value decryptAsync(jsi::Runtime &rt, std::string encryptedText, std::string key);
+    
+    // AES-256 specific methods
+    std::string encrypt256(jsi::Runtime &rt, std::string plainText, std::string key);
+    std::string decrypt256(jsi::Runtime &rt, std::string encryptedText, std::string key);
+    jsi::Value encrypt256Async(jsi::Runtime &rt, std::string plainText, std::string key);
+    jsi::Value decrypt256Async(jsi::Runtime &rt, std::string encryptedText, std::string key);
   };
 }

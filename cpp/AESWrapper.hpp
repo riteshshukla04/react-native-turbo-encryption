@@ -4,6 +4,12 @@
 #include <string>
 #include <vector>
 
+// AES type enumeration
+enum class AESType {
+    AES_128 = 0,  // Renamed to avoid macro conflict with AES128 from tinyaes
+    AES_256 = 1
+};
+
 // Convert a binary buffer to a hex string
 std::string bytesToHex(const uint8_t *data, size_t length);
 
@@ -11,9 +17,9 @@ std::string bytesToHex(const uint8_t *data, size_t length);
 std::vector<uint8_t> hexToBytes(const std::string &hex);
 
 // Encrypt a string with a given key and return the result as a hex string
-std::string encryptString(const std::string &plainText, const std::string &key);
+std::string encryptString(const std::string &plainText, const std::string &key, AESType aesType = AESType::AES_128);
 
 // Decrypt a hex string with a given key and return the result as plaintext
-std::string decryptString(const std::string &encryptedHex, const std::string &key);
+std::string decryptString(const std::string &encryptedHex, const std::string &key, AESType aesType = AESType::AES_128);
 
 #endif // AES_WRAPPER_HPP

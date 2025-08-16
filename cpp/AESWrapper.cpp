@@ -9,26 +9,25 @@
 const uint8_t iv[16] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                         0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f};
 
-// Adjust key size to 16, 24, or 32 bytes for AES compatibility
-void adjustKey(const std::string &key, std::vector<uint8_t> &outputKey)
+// Adjust key size based on AES type
+void adjustKey(const std::string &key, std::vector<uint8_t> &outputKey, AESType aesType)
 {
-    static const size_t AES_KEY_SIZES[] = {16, 24, 32}; // Supported AES key sizes
+    // Since the library is compiled with AES256 support, we always need 32 bytes
+    // For AES128, we'll use the first 16 bytes of the key and zero out the rest
+    size_t targetKeySize = 32;
     size_t originalKeySize = key.size();
-    size_t adjustedSize = AES_KEY_SIZES[0];
 
-    // Determine the appropriate key size (16, 24, or 32 bytes)
-    for (size_t size : AES_KEY_SIZES)
-    {
-        if (originalKeySize <= size)
-        {
-            adjustedSize = size;
-            break;
-        }
+    // Resize the output key to the target size
+    outputKey.resize(targetKeySize, 0); // Fill with zeros by default
+    
+    if (aesType == AESType::AES_128) {
+        // For AES128, only use the first 16 bytes
+        std::memcpy(outputKey.data(), key.data(), std::min(originalKeySize, static_cast<size_t>(16)));
+        // The rest (16-31) are already zeroed out
+    } else {
+        // For AES256, use all 32 bytes
+        std::memcpy(outputKey.data(), key.data(), std::min(originalKeySize, targetKeySize));
     }
-
-    // Resize the output key to the adjusted size
-    outputKey.resize(adjustedSize, 0); // Fill with zeros by default
-    std::memcpy(outputKey.data(), key.data(), std::min(originalKeySize, adjustedSize));
 }
 
 // Helper: Add padding to plaintext to make its size a multiple of 16 bytes
@@ -74,10 +73,12 @@ std::vector<uint8_t> hexToBytes(const std::string &hex)
 }
 
 // Function to encrypt a string with a dynamic key size and return the result as a hex string
-std::string encryptString(const std::string &plainText, const std::string &key)
+std::string encryptString(const std::string &plainText, const std::string &key, AESType aesType)
 {
     std::vector<uint8_t> keyBytes;
-    adjustKey(key, keyBytes);
+    adjustKey(key, keyBytes, aesType);
+
+
 
     // Add padding to the plaintext
     std::vector<uint8_t> paddedData = addPadding(plainText);
@@ -101,10 +102,10 @@ std::string encryptString(const std::string &plainText, const std::string &key)
 }
 
 // Function to decrypt a hex string with a dynamic key size and return the result as a plaintext string
-std::string decryptString(const std::string &encryptedHex, const std::string &key)
+std::string decryptString(const std::string &encryptedHex, const std::string &key, AESType aesType)
 {
     std::vector<uint8_t> keyBytes;
-    adjustKey(key, keyBytes);
+    adjustKey(key, keyBytes, aesType);
 
     // Convert hex string back to binary
     std::vector<uint8_t> encryptedData = hexToBytes(encryptedHex);

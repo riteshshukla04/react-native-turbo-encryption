@@ -12,6 +12,10 @@ import {
   decrypt,
   encryptAsync,
   decryptAsync,
+  encrypt256,
+  decrypt256,
+  encrypt256Async,
+  decrypt256Async,
 } from 'react-native-turbo-encryption';
 
 export default function App() {
@@ -19,12 +23,18 @@ export default function App() {
   const key = 'I only Believe on Jassi Bhai';
   const [encryptedText, setEncryptedText] = useState('');
   const [decryptedText, setDecryptedText] = useState('');
+  const [useAES256, setUseAES256] = useState(false);
 
   const handleEncrypt = () => {
     try {
-      const encrypted = encrypt(plainText, key);
+      const encrypted = useAES256
+        ? encrypt256(plainText, key)
+        : encrypt(plainText, key);
       setEncryptedText(encrypted);
-      Alert.alert('Success', 'Text encrypted successfully!');
+      Alert.alert(
+        'Success',
+        `Text encrypted successfully with ${useAES256 ? 'AES-256' : 'AES-128'}!`
+      );
     } catch (error) {
       Alert.alert('Error', (error as any).message as any);
     }
@@ -32,9 +42,14 @@ export default function App() {
 
   const handleDecrypt = () => {
     try {
-      const decrypted = decrypt(encryptedText, key);
+      const decrypted = useAES256
+        ? decrypt256(encryptedText, key)
+        : decrypt(encryptedText, key);
       setDecryptedText(decrypted);
-      Alert.alert('Success', 'Text decrypted successfully!');
+      Alert.alert(
+        'Success',
+        `Text decrypted successfully with ${useAES256 ? 'AES-256' : 'AES-128'}!`
+      );
     } catch (error) {
       Alert.alert('Error', (error as any).message as any);
     }
@@ -42,9 +57,14 @@ export default function App() {
 
   const handleEncryptAsync = async () => {
     try {
-      const encrypted = await encryptAsync(plainText, key);
+      const encrypted = useAES256
+        ? await encrypt256Async(plainText, key)
+        : await encryptAsync(plainText, key);
       setEncryptedText(encrypted);
-      Alert.alert('Success', 'Text encrypted successfully!');
+      Alert.alert(
+        'Success',
+        `Text encrypted successfully with ${useAES256 ? 'AES-256' : 'AES-128'}!`
+      );
     } catch (error) {
       Alert.alert('Error', (error as any).message as any);
     }
@@ -52,9 +72,14 @@ export default function App() {
 
   const handleDecryptAsync = async () => {
     try {
-      const decrypted = await decryptAsync(encryptedText, key);
+      const decrypted = useAES256
+        ? await decrypt256Async(encryptedText, key)
+        : await decryptAsync(encryptedText, key);
       setDecryptedText(decrypted);
-      Alert.alert('Success', 'Text decrypted successfully!');
+      Alert.alert(
+        'Success',
+        `Text decrypted successfully with ${useAES256 ? 'AES-256' : 'AES-128'}!`
+      );
     } catch (error) {
       Alert.alert('Error', (error as any).message as any);
     }
@@ -62,13 +87,27 @@ export default function App() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}></Text>
+      <Text style={styles.title} />
 
       <Text style={styles.label}>Plain Text:</Text>
       <Text style={styles.output}>{plainText}</Text>
 
       <Text style={styles.label}>Key:</Text>
       <Text style={styles.output}>{key}</Text>
+
+      <Text style={styles.label}>AES Type:</Text>
+      <View style={styles.buttonContainer}>
+        <Button
+          title={`AES-128 ${!useAES256 ? '(Active)' : ''}`}
+          onPress={() => setUseAES256(false)}
+          color={!useAES256 ? '#007BFF' : '#6C757D'}
+        />
+        <Button
+          title={`AES-256 ${useAES256 ? '(Active)' : ''}`}
+          onPress={() => setUseAES256(true)}
+          color={useAES256 ? '#007BFF' : '#6C757D'}
+        />
+      </View>
 
       <View style={styles.buttonContainer}>
         <Button title="Encrypt" onPress={handleEncrypt} color="#007BFF" />
