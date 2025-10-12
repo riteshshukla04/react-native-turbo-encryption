@@ -1,0 +1,16 @@
+{
+  "cxxNamespace": ["turboencryption"],
+  "ios": {
+    "iosModuleName": "TurboEncryption"
+  },
+  "android": {
+    "androidNamespace": ["turboencryption"],
+    "androidCxxLibName": "turboencryption"
+  },
+  "autolinking": {
+    "TurboEncryption": {
+      "cpp": "TurboEncryption"
+    }
+  },
+  "ignorePaths": ["node_modules"]
+}

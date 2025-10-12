@@ -1,6 +1,9 @@
-const TurboEncryption = require('./NativeTurboEncryption').default;
+import { NitroModules } from 'react-native-nitro-modules';
+import type { TurboEncryption } from './TurboEncryption.nitro';
 
-// AES Type constants
+const TurboEncryption =
+  NitroModules.createHybridObject<TurboEncryption>('TurboEncryption');
+
 export const AESType = {
   AES128: 0,
   AES256: 1,

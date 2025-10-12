@@ -1,7 +1,7 @@
-import type { TurboModule } from 'react-native';
-import { TurboModuleRegistry } from 'react-native';
+import type { HybridObject } from 'react-native-nitro-modules';
 
-export interface Spec extends TurboModule {
+export interface TurboEncryption
+  extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
   encrypt(plainText: string, key: string): string;
   decrypt(encryptedText: string, key: string): string;
   decryptAsync(encryptedText: string, key: string): Promise<string>;
@@ -13,5 +13,3 @@ export interface Spec extends TurboModule {
   decrypt256Async(encryptedText: string, key: string): Promise<string>;
   encrypt256Async(plainText: string, key: string): Promise<string>;
 }
-
-export default TurboModuleRegistry.getEnforcing<Spec>('TurboEncryption');
