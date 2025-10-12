@@ -1,46 +1,49 @@
-cmake_minimum_required(VERSION 3.4.1)
-project(TurboEncryption)
+project(turboencryption)
+cmake_minimum_required(VERSION 3.9.0)
 
-
-
-set (CMAKE_VERBOSE_MAKEFILE ON)
+set(PACKAGE_NAME turboencryption)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 20)
 
-
-add_library(react-native-turbo-encryption           
-            STATIC
-            ../cpp/NativeTurboEncryptionTurboModule.cpp
-            ../cpp/tinyaes/aes.c
-            ../cpp/tinyaes/aes.h
-            ../cpp/tinyaes/aes.hpp
-            ../cpp/AESWrapper.cpp
-            ../cpp/AESWrapper.hpp
+# Find all C++ files (shared and platform specifics)
+file(GLOB_RECURSE shared_files RELATIVE ${CMAKE_SOURCE_DIR}
+        "../cpp/**.cpp"
+)
+file(GLOB_RECURSE android_files RELATIVE ${CMAKE_SOURCE_DIR}
+        "src/main/cpp/**.cpp"
 )
 
-target_include_directories(react-native-turbo-encryption
-        PUBLIC
-        ../cpp
+# Define C++ library and add all sources
+add_library(${PACKAGE_NAME} SHARED 
+    src/main/cpp/cpp-adapter.cpp
+    ../cpp/TurboEncryption.cpp
+    ../cpp/tinyaes/aes.c
+     ../cpp/tinyaes/aes.h
+     ../cpp/tinyaes/aes.hpp
+     ../cpp/AESWrapper.cpp
+     ../cpp/AESWrapper.hpp
 )
 
 
-target_include_directories(react-native-turbo-encryption
+include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/turboencryption+autolinking.cmake)
+
+
+target_include_directories(${PACKAGE_NAME}
         PUBLIC
         ../cpp/tinyaes
 )
 
 
-find_library( # Sets the name of the path variable.
-              log-lib
+# Set up local includes
+include_directories(
+        "src/main/cpp"
+        "../cpp"
+)
+find_library(LOG_LIB log)
 
-              # Specifies the name of the NDK library that
-              # you want CMake to locate.
-              log )
-
-
-
-
-target_link_libraries(react-native-turbo-encryption
-        jsi
-        ${log-lib}
-        react_codegen_RNTurboEncryptionSpec
+# Link all libraries together
+target_link_libraries(
+        ${PACKAGE_NAME}
+        ${LOG_LIB}
+        android # <-- Android core
 )
